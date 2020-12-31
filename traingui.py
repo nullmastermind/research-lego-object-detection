@@ -1,4 +1,3 @@
-# noinspection PyPackageRequirements
 from gooey import GooeyParser, Gooey
 import subprocess
 
