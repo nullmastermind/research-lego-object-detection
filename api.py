@@ -6,6 +6,7 @@ from flask_cors import CORS
 from pathlib import Path
 
 from yolo import init_yolo, detect
+from labels import labels, save_label
 
 app = Flask(__name__)
 CORS(app)
@@ -20,20 +21,33 @@ def hello():
 def label():
     req_data = request.get_json(force=True)
     print(req_data)
-    save_dir = "train_data/projects/{}/{}/images".format(
+    root_save_dir = "train_data/projects/{}/{}".format(
         req_data["projectName"], req_data["dataType"]
     )
+    save_dir = "{}/images".format(root_save_dir)
     Path(save_dir).mkdir(parents=True, exist_ok=True)
     imgdata = base64.b64decode(req_data["imageBase64"])
     filename = next_path("{}/{}_%s.png".format(save_dir, req_data["label"]))
 
     with open(filename, "wb") as f:
         f.write(imgdata)
+        f.close()
         print("saved: {}".format(filename))
+
+    save_label(req_data["label"], root_save_dir)
 
     if req_data["autoMakeSense"]:
         result = detect(filename, req_data["objectConfidenceThreshold"])
-        print(result)
+        if len(result) > 0:
+            lines = ""
+            for item in result:
+                for v in item:
+                    lines += str(v) + " "
+                lines = lines.strip() + "\n"
+
+            with open(filename + ".txt", "w") as f:
+                f.write(lines.strip())
+                f.close()
 
     return "OK"
 
@@ -68,5 +82,6 @@ def next_path(path_pattern):
 
 
 if __name__ == "__main__":
+    print(labels)
     init_yolo("train_data/best.pt")
     app.run(host="0.0.0.0")
