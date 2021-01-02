@@ -20,7 +20,7 @@ def hello():
 def label():
     req_data = request.get_json(force=True)
     print(req_data)
-    save_dir = "train_data/projects/{}/{}".format(
+    save_dir = "train_data/projects/{}/{}/images".format(
         req_data["projectName"], req_data["dataType"]
     )
     Path(save_dir).mkdir(parents=True, exist_ok=True)
