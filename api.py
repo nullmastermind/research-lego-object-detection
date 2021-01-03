@@ -45,7 +45,7 @@ def label():
                     lines += str(v) + " "
                 lines = lines.strip() + "\n"
 
-            with open(filename + ".txt", "w") as f:
+            with open(filename + ".pre", "w") as f:
                 f.write(lines.strip())
                 f.close()
 
