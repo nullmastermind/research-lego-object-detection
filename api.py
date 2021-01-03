@@ -1,5 +1,6 @@
 import os
 import base64
+import json
 
 from flask import Flask, request
 from flask_cors import CORS
@@ -36,6 +37,7 @@ def label():
 
     save_label(req_data["label"], root_save_dir)
 
+    result = []
     if req_data["autoMakeSense"]:
         result = detect(filename, req_data["objectConfidenceThreshold"])
         if len(result) > 0:
@@ -49,7 +51,7 @@ def label():
                 f.write(lines.strip())
                 f.close()
 
-    return "OK"
+    return json.dumps([labels, result])
 
 
 def next_path(path_pattern):
