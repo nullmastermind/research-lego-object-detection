@@ -8,6 +8,7 @@ from pathlib import Path
 
 from yolo import init_yolo, detect
 from labels import labels, save_label
+from train_data_dir import drive
 
 app = Flask(__name__)
 CORS(app)
@@ -22,8 +23,8 @@ def hello():
 def label():
     req_data = request.get_json(force=True)
     print(req_data)
-    root_save_dir = "train_data/projects/{}/{}".format(
-        req_data["projectName"], req_data["dataType"]
+    root_save_dir = "{}/projects/{}/{}".format(
+        drive, req_data["projectName"], req_data["dataType"]
     )
     save_dir = "{}/images".format(root_save_dir)
     Path(save_dir).mkdir(parents=True, exist_ok=True)
@@ -85,5 +86,5 @@ def next_path(path_pattern):
 
 if __name__ == "__main__":
     print(labels)
-    init_yolo("train_data/best.pt")
+    init_yolo("{}/best.pt".format(drive))
     app.run(host="0.0.0.0")
