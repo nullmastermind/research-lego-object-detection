@@ -85,6 +85,7 @@ def next_path(path_pattern):
 
 
 if __name__ == "__main__":
+    print(drive)
     print(labels)
     init_yolo("{}/best.pt".format(drive))
     app.run(host="0.0.0.0")
