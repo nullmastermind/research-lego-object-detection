@@ -29,7 +29,6 @@ pandas~=1.1.5
 thop~=0.0.31-2005241907
 pycocotools>=2.0  # COCO mAP
 
-yaml~=0.2.5
 requests~=2.24.0
 gooey~=1.0.8
 flask~=1.1.2
